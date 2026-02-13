@@ -287,16 +287,26 @@ function roundShape(){
 const ANIMALS=['🐘','🦁','🐵','🦒','🐢','🐸','🐧','🦋'];
 function roundCount(){
   const animal=ANIMALS[Math.random()*ANIMALS.length|0];
-  const count=1+Math.floor(Math.random()*5);
-  let nums=[count]; while(nums.length<4){const n=1+Math.floor(Math.random()*5);if(!nums.includes(n))nums.push(n)} shuffle(nums);
+  const correctCount=1+Math.floor(Math.random()*5); // 1-5
+  // Build exactly correctCount animals displayed individually
+  const animalDisplay=[];
+  for(let i=0;i<correctCount;i++) animalDisplay.push(animal);
+  // Build answer options: always include correct, add 3 wrong ones
+  const wrongNums=[];
+  for(let n=1;n<=5;n++){if(n!==correctCount)wrongNums.push(n)}
+  shuffle(wrongNums);
+  const options=shuffle([correctCount,wrongNums[0],wrongNums[1],wrongNums[2]]);
   const p=document.getElementById('prompt');
   const c=document.getElementById('content');
-  p.innerHTML=`<div class="animal-area">${Array(count).fill(animal).map(a=>`<span>${a}</span>`).join('')}</div>`;
-  c.innerHTML=`<div class="opts-row">${nums.map(n=>`<button class="num-btn" data-n="${n}">${n}</button>`).join('')}</div>`;
+  p.innerHTML=`<div class="animal-area">${animalDisplay.map(a=>`<span>${a}</span>`).join('')}</div>`;
+  c.innerHTML=`<div class="opts-row">${options.map(n=>`<button class="num-btn" data-n="${n}">${n}</button>`).join('')}</div>`;
   c.querySelectorAll('.num-btn').forEach(el=>{
-    el.onclick=()=>{if(+el.dataset.n===count)win(el);else lose(el)};
+    el.onclick=()=>{
+      const tapped=parseInt(el.getAttribute('data-n'),10);
+      if(tapped===correctCount) win(el); else lose(el);
+    };
   });
-  speak("How many do you see? Tap the number!");
+  speak("How many "+animal+" do you see? Tap the number!");
 }
 
 // ===== BUBBLE POP =====
