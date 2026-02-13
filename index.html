@@ -61,7 +61,7 @@ body{background:linear-gradient(135deg,var(--bg1),var(--bg2));display:flex;flex-
 .color-circle.wrong-flash{animation:wobble .4s ease}
 
 /* Shape sorter */
-.shape-display{width:120px;height:120px;display:flex;align-items:center;justify-content:center;font-size:80px;opacity:.3;filter:grayscale(1)}
+.shape-display{width:120px;height:120px;display:flex;align-items:center;justify-content:center;font-size:80px;background:rgba(0,0,0,.05);border:4px dashed #ccc;border-radius:28px}
 .shape-opt{width:90px;height:90px;border-radius:20px;background:#fff;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:52px;cursor:pointer;transition:transform .15s}
 .shape-opt:active{transform:scale(.9)}
 .shape-opt.correct-flash{animation:correctPop .5s ease}
@@ -291,7 +291,7 @@ function roundCount(){
   let nums=[count]; while(nums.length<4){const n=1+Math.floor(Math.random()*5);if(!nums.includes(n))nums.push(n)} shuffle(nums);
   const p=document.getElementById('prompt');
   const c=document.getElementById('content');
-  p.innerHTML=`<div class="animal-area">${animal.repeat(count).split('').map(a=>`<span>${a}</span>`).join('')}</div>`;
+  p.innerHTML=`<div class="animal-area">${Array(count).fill(animal).map(a=>`<span>${a}</span>`).join('')}</div>`;
   c.innerHTML=`<div class="opts-row">${nums.map(n=>`<button class="num-btn" data-n="${n}">${n}</button>`).join('')}</div>`;
   c.querySelectorAll('.num-btn').forEach(el=>{
     el.onclick=()=>{if(+el.dataset.n===count)win(el);else lose(el)};
@@ -308,8 +308,11 @@ function roundBubble(){
   const p=document.getElementById('prompt');
   const c=document.getElementById('content');
   p.innerHTML='';
+  // Grid-based placement to avoid overlap
+  const positions=[[5,5],[45,5],[5,40],[45,40],[25,70],[65,5]];
+  shuffle(positions);
   c.innerHTML=`<div id="bubble-container">${arr.map((n,i)=>{
-    const x=10+Math.random()*60, y=5+Math.random()*60;
+    const [x,y]=positions[i]||[10+i*15,20];
     const bg=BUBBLE_COLORS[i%BUBBLE_COLORS.length];
     return `<div class="bubble" style="left:${x}%;top:${y}%;background:${bg};animation-delay:${i*.3}s" data-n="${n}">${n}</div>`;
   }).join('')}</div>`;
@@ -329,10 +332,10 @@ function roundSize(){
   const askBig=Math.random()>.5;
   const p=document.getElementById('prompt');
   const c=document.getElementById('content');
-  p.innerHTML='';
   const bigSize=clamp(100,140), smallSize=clamp(50,70);
   const order=Math.random()>.5;
-  c.innerHTML=`<div class="opts-row">
+  p.innerHTML=`<div style="font-size:48px">${askBig?'👆':'👇'}</div>`;
+  c.innerHTML=`<div class="opts-row" style="gap:32px">
     <div class="size-item" data-sz="${order?'big':'small'}" style="font-size:${order?bigSize:smallSize}px;cursor:pointer">${item}</div>
     <div class="size-item" data-sz="${order?'small':'big'}" style="font-size:${order?smallSize:bigSize}px;cursor:pointer">${item}</div>
   </div>`;
