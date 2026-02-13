@@ -122,7 +122,7 @@ body{background:linear-gradient(135deg,var(--bg1),var(--bg2));display:flex;flex-
       <button class="menu-btn" onclick="startGame('color')">🎨</button>
       <button class="menu-btn" onclick="startGame('shape')">🔷</button>
       <button class="menu-btn" onclick="startGame('count')">🦁</button>
-      <button class="menu-btn" onclick="startGame('bubble')">🫧</button>
+      <button class="menu-btn" onclick="startGame('bubble')">🔵</button>
       <button class="menu-btn" onclick="startGame('size')">📏</button>
     </div>
     <div class="progress-stars" id="menu-stars"></div>
@@ -216,7 +216,7 @@ function startGame(g){
   currentGame=g; gameStars=0; roundsInGame=0;
   document.getElementById('menu').style.display='none';
   document.getElementById('game-area').classList.add('active');
-  const names={color:'Color Match 🎨',shape:'Shape Sorter 🔷',count:'Counting Safari 🦁',bubble:'Bubble Pop 🫧',size:'Big & Small 📏'};
+  const names={color:'Color Match 🎨',shape:'Shape Sorter 🔷',count:'Counting Safari 🦁',bubble:'Bubble Pop 🔵',size:'Big & Small 📏'};
   document.getElementById('game-name').textContent=names[g];
   renderGameStars(); nextRound();
 }
@@ -239,7 +239,7 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;
 // ===== COLOR MATCH =====
 const COLORS=[
   {name:'red',hex:'#EF5350',emoji:'🍎'},
-  {name:'blue',hex:'#42A5F5',emoji:'🫐'},
+  {name:'blue',hex:'#42A5F5',emoji:'💙'},
   {name:'yellow',hex:'#FFEE58',emoji:'⭐'},
   {name:'green',hex:'#66BB6A',emoji:'🥒'},
   {name:'orange',hex:'#FFA726',emoji:'🍊'},
@@ -284,7 +284,7 @@ function roundShape(){
 }
 
 // ===== COUNTING SAFARI =====
-const ANIMALS=['🐘','🦁','🐵','🦒','🐢','🐸','🐧','🦋'];
+const ANIMALS=['🐘','🦁','🐵','🐢','🐸','🐶','🐱','🐰'];
 function roundCount(){
   const animal=ANIMALS[Math.random()*ANIMALS.length|0];
   const correctCount=1+Math.floor(Math.random()*5); // 1-5
